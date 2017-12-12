@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MVC.Models.mvcProductModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br/>
+<p>
+    <a href="@Url.Action("AddOrEdit","Product")" class="btn btn-default"><i class="fa fa-plus"></i>Create New </a> 
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>Actions </th>
+    </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            <a href="@Url.Action("AddOrEdit","Product",new { id=item.Id})" class="btn btn-default"><i class="fa fa-pencil"></i>Edit</a>
+            <a onclick="Delete(@item.Id)" class="btn btn-default"><i class="fa fa-trash"></i>Delete</a>
+
+        </td>
+    </tr>
+}
+
+</table>
+@section scripts{
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                alertify.success(successMessage);
+            }
+        })
+        function Delete(id) {
+            
+            alertify.confirm("Confirm Delete ", "Are you sure You Want to Delete", function () {
+                window.location.href = '@Url.Action("Delete","Product")/' + id;
+            },null)
+        }
+    </script>
+    }
